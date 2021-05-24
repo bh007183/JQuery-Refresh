@@ -45,7 +45,9 @@ $("#searchForm").submit(function(event){
                           $("<span>").addClass("card-title").text(res.items[i].volumeInfo.title)
                            ),
                       $("<div>").addClass("card-content").append(
-                          $("<p>").text(res.items[i].searchInfo.textSnippet))))))
+                          $("<p>").addClass("te").text(res.items[i].searchInfo.textSnippet)).click(function(event){
+                              console.log("origin")
+                          })))))
 
             }
         })
@@ -58,11 +60,9 @@ $("#searchForm").submit(function(event){
 let counter = 0
 
 $(".row").click(function(event){
-    if($(event.target).attr("class") === "row"){
-        $(event.target).addClass("yogert")
-
-    }
-   
-
+   console.log("yogurt")
 
 })
+// $(".te").click(function(event){
+//     console.log("origin")
+// })
