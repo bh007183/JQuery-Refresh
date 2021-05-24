@@ -1,50 +1,68 @@
-$("#mainDiv").text("your mom");
-$("#mainDiv").addClass("fish");
 
-$("#mainDiv").click(function () {
-    if($("#secDiv").css("background-color") !== "rgb(0, 0, 255)"){
-        $("#secDiv").css({ width: "90px", height: "90px", backgroundColor: "blue" })
-        
-
-    }else{
-        $("#secDiv").css({ width: "90px", height: "90px", backgroundColor: "red" })
-
-    }
-  
+$("#searchForm").submit(function(event){
     
-    
-    
-    
- 
-  
-});
+    event.preventDefault()
+   const searchVal = $("#searchInput").val()
+    try{
+        $.ajax({
+            url: `https://www.googleapis.com/books/v1/volumes?q=${searchVal}`,
+            method: "GET",
+        }).then(res => {
+            $(".cardDrop").empty()
 
-$("#secDiv").click(() => {
-    console.log("aa")
-    switch ($("#secDiv").css("display")) {
-        
-
-       
-        default:
-            $("#secDiv").hide()
-            setTimeout(() => {
-                $("#secDiv").css("display", "block")
+            for(let i = 0; i < res.items.length; i++){
+                let imgSourc;
+                if(res.items[i].volumeInfo.imageLinks === undefined){
+                    imgSourc = "https://i.ytimg.com/vi/nWWB_WFtqRg/maxresdefault.jpg"
+                }else{
+                    imgSourc = imgSourc = res.items[i].volumeInfo.imageLinks.smallThumbnail || res.items[i].volumeInfo.imageLinks.thumbnail
+                }
                 
-            }, 5000);
-            break;
+                
+        //         $(".cardDrop").append(`<div class="row">
+        //     <div class="col s12">
+        //       <div class="card">
+        //         <div class="card-image">
+        //           <img src=${imgSourc}>
+        //           <span class="card-title">${res.items[i].volumeInfo.title}</span>
+        //         </div>
+        //         <div class="card-content">
+        //           <p>${res.items[i].searchInfo.textSnippet}.</p>
+        //         </div>
+        //         <div class="card-action">
+        //           <a href="#">This is a link</a>
+        //         </div>
+        //       </div>
+        //     </div>
+        //   </div>`)
+
+          $(".cardDrop").append(
+              $("<div>").addClass("row").append(
+                  $("<div>").addClass("card").append(
+                  $("<div>").addClass("col s12").append(
+                      $("<div>").addClass("card-image").append(
+                          $("<img>").attr("src", imgSourc),
+                          $("<span>").addClass("card-title").text(res.items[i].volumeInfo.title)
+                           ),
+                      $("<div>").addClass("card-content").append(
+                          $("<p>").text(res.items[i].searchInfo.textSnippet))))))
+
+            }
+        })
+
+    }catch(err){
+        console.log(err)
     }
-    
-    
-    
 })
 
-$("<div/>").css({backgroundColor: "black", width: '20px', height: "10px"}).appendTo($("#secDiv"))
+let counter = 0
 
-$.ajax({
-    url: "target",
-    data: "your face",
-    method: "post"
+$(".row").click(function(event){
+    if($(event.target).attr("class") === "row"){
+        $(event.target).addClass("yogert")
 
-}).then(res, function(){
-    console.log(res)
+    }
+   
+
+
 })
